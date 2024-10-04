@@ -1,3 +1,7 @@
-export default function loading() {
-  return <h1 className="text-3xl text-red-500 font-semibold ">loading...</h1>;
+export default function Loading() {
+  return (
+    <div className="flexCenter h-screen bg-bg-200">
+      <div className="loader text-primary-200" />
+    </div>
+  );
 }

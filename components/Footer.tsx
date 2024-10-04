@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="max-Container padding-container p-8 bg-darkPrimary-300 border-t-2 border-gray-400 flex justify-between items-start">
+    <footer className="max-Container padding-container p-8 h-44 bg-darkPrimary-300 border-t-2 border-gray-400 flex justify-center items-center gap-10">
       <Link href="/" className="flex items-center gap-4 z-10 mx-7">
         <Image
           className="cursor-pointer rounded-full aspect-square "
@@ -16,7 +16,7 @@ export default function Footer() {
         />
       </Link>
 
-      <div className="flex flex-col gap-8 ">
+      <div className="flex flex-col gap-4 ">
         <h1 className="text-lg lg:text-xl cursor-default  text-black font-semibold text-center default-underline hover:text-blue-950 transition-all duration-100 ">
           Scrub&Shine
         </h1>

@@ -1,5 +1,5 @@
+import { FaChartLine, FaHome, FaTasks } from "react-icons/fa";
 import FeatureCard from "./FeatureCard";
-import { FaTasks, FaHome, FaChartLine } from "react-icons/fa";
 
 type FeatureCardProps = {
   title: string;

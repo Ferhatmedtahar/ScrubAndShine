@@ -12,7 +12,7 @@ export default function FeatureCard({
   return (
     <CardSpotlight
       radius={120}
-      color="#baf5a8  "
+      color="#0bee71  "
       className=" bg-bg-200 p-4 rounded-lg lg:p-8 shadow-lg"
     >
       <h3 className="text-xl font-semibold mb-2 flex items-center gap-2 text-darkPrimary-100">

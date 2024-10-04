@@ -21,13 +21,13 @@ module.exports = {
           300: "#08bc59", // Darker green
         },
         text: {
-          100: "#20205f", // Dark gray text
-          200: "#5c5c5c", // Medium gray text
+          100: "#10305f",
+          200: "#5c5c5c",
         },
         bg: {
-          100: "#FFFFFF", // White background
-          200: "#f5f5f5", // Light gray background
-          300: "#cccccc", // Medium gray background
+          100: "#FFFFFF",
+          200: "#f5f5f5",
+          300: "#edffff",
         },
         // Dark Mode Colors
         darkPrimary: {

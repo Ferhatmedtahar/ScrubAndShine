@@ -51,7 +51,7 @@ export const CardSpotlight = ({
             radial-gradient(
               ${radius}px circle at ${mouseX}px ${mouseY}px,
               white,
-              transparent 70%
+              transparent 110%
             )
           `,
         }}
