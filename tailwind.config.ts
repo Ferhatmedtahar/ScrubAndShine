@@ -1,6 +1,5 @@
-import type { Config } from "tailwindcss";
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,54 +9,83 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
+        // Light Mode Colors
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          100: "#0077C2", // Blue primary shade
+          200: "#0095f5", // Lighter blue
+          300: "#02a5f5", // Very light blue
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          100: "#0bee71",
+          200: "#08cc69", // Bright green
+          300: "#08bc59", // Darker green
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        text: {
+          100: "#20205f", // Dark gray text
+          200: "#5c5c5c", // Medium gray text
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
+        bg: {
+          100: "#FFFFFF", // White background
+          200: "#f5f5f5", // Light gray background
+          300: "#cccccc", // Medium gray background
+        },
+        // Dark Mode Colors
+        darkPrimary: {
+          100: "#0072ff", // Darker blue primary
+          200: "#008fff",
+          300: "#69b4ff", // Lighter blue
+          400: "#e0ffff", // Very light blue
+        },
+        darkAccent: {
+          100: "#00ff64", // light green accent
+          200: "#e1ffff", // Light blue accent
+        },
+        darkText: {
+          100: "#FFFFFF", // White text
+          200: "#9e9e9e", // Light gray text
+        },
+        darkBg: {
+          100: "#1E1E1E", // Dark gray background
+          200: "#2d2d2d", // Darker gray background
+          300: "#454545", // Medium dark gray background
+        },
+        // Additional Colors
+        green: {
+          50: "#30AF5B",
+          90: "#292C27",
+        },
+        gray: {
+          10: "#EEEEEE",
+          20: "#A2A2A2",
+          30: "#7B7B7B",
+          50: "#585858",
+          90: "#141414",
+        },
+        blue: {
+          70: "#021639",
         },
       },
+      backgroundImage: {
+        "bg-img-1": "url('/background.png')",
+        "bg-main": "url('/bgbg.jpg')",
+        // "bg-img-2": "url('/img-2.png')",
+        // "feature-bg": "url('/feature-bg.png')",
+        // pattern: "url('/pattern.png')",
+        // "pattern-2": "url('/pattern-bg.png')",
+      },
+      screens: {
+        xxs: "300px",
+        xs: "380px",
+        "3xl": "1680px",
+        "4xl": "2200px",
+      },
+      maxWidth: {
+        "10xl": "1512px",
+      },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        "5xl": "40px",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 };
-export default config;

@@ -3,5 +3,5 @@ export const metadata = {
 };
 
 export default function page() {
-  return <div>room page</div>;
+  return <div className="container">rooms page</div>;
 }

@@ -1,13 +1,14 @@
-import "@/app/_styles/globals.css";
+import "@/app/globals.css";
+import Footer from "@/components/Footer";
+import NavBar from "@/components/NavBar";
 import { Metadata } from "next";
-import NavBar from "../components/NavBar";
 export const metadata: Metadata = {
   title: {
     default: "Scrub&Shine",
     template: "%s | Scrub&Shine",
   },
   description:
-    "come here , see all the rooms for scrub and shine, and tasks for each room , track your progress and organize your tasks",
+    " Stay organized, save time and see all the rooms to scrub and shine, tasks for each room , track your progress and organize your tasks !",
 };
 
 export default function RootLayout({
@@ -17,12 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-slate-400 flex  items-center justify-center flex-col gap-20 mt-4 text-2xl px-8 py-3 ">
+      <body className=" bg-bg-200 ">
         <NavBar />
 
         {children}
-
-        <footer className="text-center text-cyan-200">footer</footer>
+        <Footer />
       </body>
     </html>
   );

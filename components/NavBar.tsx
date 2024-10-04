@@ -1,29 +1,22 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "./Button";
 import Logo from "./Logo";
-
-import { Button } from "@/components/ui/button";
-
-export function ButtonLogin() {
-  return <Button>login</Button>;
-}
 
 function isActive(pathname: string, href: string) {
   return pathname.startsWith(href);
 }
 export default function NavBar() {
   const pathname = usePathname();
+  console.log(pathname);
   // const user = {
   //   name: "john doe",
-  //   image: "https://i.pravatar.cc/300",
   // };
-
   const user: any = null;
-  // {`hover:text-accent-400 transition-colors `}
   return (
-    <nav className="flex justify-between items-center w-full ">
-      <ul className="flex justify-start items-center gap-4 w-full p-3 ">
+    <nav className=" mx-3 flex justify-between items-center  ">
+      <ul className=" flex justify-start items-center gap-4 w-full py-2 ">
         <Logo />
         <li>
           <Link
@@ -32,7 +25,7 @@ export default function NavBar() {
               isActive(pathname, "/rooms")
                 ? "underline-offset-4 underline "
                 : ""
-            } hover:text-green-400 transition-colors duration-200`}
+            } hover:text-accent-300 transition-colors duration-200`}
           >
             rooms
           </Link>
@@ -40,18 +33,12 @@ export default function NavBar() {
       </ul>
       {user ? (
         <Link href={"/profile"}>
-          {/* <ButtonLogin /> */}
-          <Button variant="outline">login</Button>
-          <img
-            className="rounded-full h-9 cursor-pointer hover:h-11 transition-all duration-200"
-            src={user?.image}
-            alt={user?.name}
-            referrerPolicy="no-referrer"
-          />
+          <p>{user.name}</p>
         </Link>
       ) : (
-        <Button variant="outline">login</Button>
-        // <Link href={"/login"}>login</Link>
+        <Button background="bg-primary-300" hoverBackground="bg-primary-200">
+          <Link href={"/login"}>Login</Link>
+        </Button>
       )}
     </nav>
   );
