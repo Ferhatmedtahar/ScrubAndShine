@@ -27,7 +27,8 @@ module.exports = {
         bg: {
           100: "#FFFFFF",
           200: "#f5f5f5",
-          300: "#edffff",
+          300: "#f5fcfc",
+          400: "#efffff",
         },
         // Dark Mode Colors
         darkPrimary: {
