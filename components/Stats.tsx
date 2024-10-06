@@ -1,5 +1,4 @@
 import AnalyticsCard from "./AnalyticsCard";
-import { Button } from "./ui/Button";
 
 export default function Stats() {
   return (
@@ -9,7 +8,6 @@ export default function Stats() {
         <AnalyticsCard title="Total Rooms" value={5} />
         <AnalyticsCard title="Completed Tasks" value={18} total={24} />
       </div>
-      <Button size={"lg"}>Add New Room</Button>
     </div>
   );
 }

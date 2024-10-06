@@ -65,7 +65,7 @@ function AddTaskDialog({
           <Plus className="mr-2 h-4 w-4" /> Add New Task
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="xs:max-w-[320px] xs:max-h-[400px] rounded-lg  sm:max-w-[425px] sm:max-h-[450px] bg-blue-50">
         <DialogHeader>
           <DialogTitle>{task ? "Edit Task" : "Add New Task"}</DialogTitle>
           <DialogDescription>

@@ -13,7 +13,7 @@ export default function Hero() {
         </h1>
         <FlipWords
           words={words}
-          duration={1500}
+          duration={1300}
           className="text-3xl md:text-4xl  font-medium text-accent-300 -mt-5 -p-1"
         />
         <p className="text-text-100 text-lg font-semibold">

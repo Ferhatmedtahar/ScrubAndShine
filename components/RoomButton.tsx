@@ -1,9 +1,11 @@
 function RoomButton({
   children,
   variant,
+  onClick,
 }: {
   children: React.ReactNode;
   variant?: string;
+  onClick?: () => void;
 }) {
   let hovering: string = "";
   if (variant === "delete")
@@ -13,6 +15,7 @@ function RoomButton({
   if (variant === "base") hovering = `hover:bg-slate-200   `;
   return (
     <button
+      onClick={onClick}
       className={`p-2 flex items-center  rounded-md border border-slate-300  ${hovering} transition-all duration-100`}
     >
       {children}
