@@ -1,28 +1,63 @@
-import { Check, ChevronDown, ChevronUp, Edit, Trash2 } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Edit,
+  RotateCcw,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import Badge from "./Badge";
+import { Checkbox } from "./Checkbox";
 import { Button } from "./ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 
-export default function TaskCard({
-  title,
-  description,
-  priority,
-  onEdit, // Pass the onEdit handler from parent
-  onDelete,
-}: {
+type Task = {
+  id: number;
   title: string;
   description: string;
   priority: "High" | "Medium" | "Low";
+  completed: boolean;
+};
+
+export default function TaskCard({
+  task,
+  toggleTaskCompletion,
+  onEdit, // Pass the onEdit handler from parent
+  setTaskToDelete,
+}: {
+  task: Task;
+  toggleTaskCompletion: () => void;
   onEdit: () => void;
-  onDelete: () => void;
+  setTaskToDelete: (task: Task) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const { title, description, priority } = task;
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-lg font-semibold ">{title}</CardTitle>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            checked={task.completed}
+            onCheckedChange={toggleTaskCompletion}
+            className={` h-7 w-7 rounded-full transition-colors duration-100
+            ${
+              task.completed
+                ? "bg-green-400 hover:bg-green-400/70 "
+                : " hover:bg-red-400/65"
+            }`}
+          />
+          <CardTitle
+            className={`text-lg font-semibold ${
+              task.completed
+                ? "line-through text-muted-foreground text-slate-500"
+                : ""
+            }`}
+          >
+            {title}
+          </CardTitle>
+        </div>
         <div className="flex items-center space-x-2">
           <Badge priority={priority} />
           <Button
@@ -61,7 +96,7 @@ export default function TaskCard({
               <span className="sr-only">Edit task</span>
             </Button>
             <Button
-              onClick={onDelete}
+              onClick={() => setTaskToDelete(task)}
               size="sm"
               className="hover:bg-red-500 hover:border-red-700 hover:text-white duration-200 transition-all"
               variant="outline"
@@ -69,13 +104,21 @@ export default function TaskCard({
               <Trash2 className="mr-2 h-4 w-4" /> Delete
               <span className="sr-only">Delete task</span>
             </Button>
-            <Button
-              size="sm"
-              variant="default"
-              className=" hover:border-gray-800  duration-200 transition-all"
-            >
-              <Check className="mr-2 h-4 w-4" /> Mark as Finished
-              <span className="sr-only">Mark task as finished</span>
+            <Button size="sm" variant="default" onClick={toggleTaskCompletion}>
+              {task.completed ? (
+                <>
+                  <RotateCcw className="mr-2 h-4 w-4" /> Mark as Unfinished
+                </>
+              ) : (
+                <>
+                  <Check className="mr-2 h-4 w-4" /> Mark as Finished
+                </>
+              )}
+              <span className="sr-only">
+                {task.completed
+                  ? "Mark task as unfinished"
+                  : "Mark task as finished"}
+              </span>
             </Button>
           </div>
         )}

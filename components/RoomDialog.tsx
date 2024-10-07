@@ -86,7 +86,6 @@ export default function RoomDialog({
     onAddRoom(newRoom);
     setRoomTitle("");
     setRoomDescription("");
-    // reset();
     setOpen(false);
   };
   return (

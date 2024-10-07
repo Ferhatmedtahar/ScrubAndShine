@@ -16,9 +16,9 @@ export default function RoomItem({
   // description={room.description}
   // tasksCount={room.taskCount}
   return (
-    <div className="border border-darkPrimary-300  rounded-lg p-4 hover:bg-bg-300 transition-all duration-150">
+    <div className="border border-darkPrimary-300  bg-green-100/10 rounded-lg p-4 hover:bg-bg-300 transition-all duration-150">
       <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <h1 className="text-lg  font-semibold">{title}</h1>
+        <h1 className="text-lg  font-semibold blue-gradient">{title}</h1>
         <div className="flex space-x-2">
           <RoomButton variant="edit" onClick={onEdit}>
             <Edit className="h-4 w-4" />
@@ -34,7 +34,7 @@ export default function RoomItem({
         </div>
       </div>
       <div>
-        <p className="text-xs text-gray-500 mb-4 sm:text-sm md:text-base ">
+        <p className="text-xs text-gray-600 mb-4 sm:text-sm md:text-base ">
           {description}
         </p>
         <div className=" flex justify-between items-center ">

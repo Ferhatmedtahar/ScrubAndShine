@@ -14,6 +14,7 @@ import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { Textarea } from "@/components/TextArea";
 import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Task = {
   title: string;
@@ -21,6 +22,11 @@ type Task = {
   priority: "High" | "Medium" | "Low";
 };
 
+type Inputs = {
+  title: string;
+  description: string;
+  priority: "High" | "Medium" | "Low";
+};
 function AddTaskDialog({
   onAddTask,
   task,
@@ -35,22 +41,38 @@ function AddTaskDialog({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<"High" | "Medium" | "Low">("Medium");
+  //!react hook form
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    handleAddTask(data);
+  };
 
   useEffect(() => {
-    if (task) {
-      setTitle(task.title);
-      setDescription(task.description);
-      setPriority(task.priority);
-    } else {
+    if (!open) {
+      // Reset the form when the dialog is closed
       setTitle("");
       setDescription("");
       setPriority("Medium");
+      reset();
+      return; // Exit early to avoid unnecessary updates
     }
-  }, [task]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    if (task !== null) {
+      // If a room is provided, populate the form with its data
+      setTitle(task.title);
+      setDescription(task.description);
+      setPriority(task.priority);
+    }
+  }, [task, open]);
 
+  const handleAddTask = (data: Inputs) => {
+    const { title, description, priority } = data;
     onAddTask({ title, description, priority });
     setTitle("");
     setDescription("");
@@ -74,7 +96,7 @@ function AddTaskDialog({
               : "Create a new task. Click create when you're done."}
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="title" className="text-right">
               Title
@@ -82,6 +104,7 @@ function AddTaskDialog({
             <Input
               id="title"
               value={title}
+              {...register("title", { required: true })}
               onChange={(e) => setTitle(e.target.value)}
               className="col-span-3"
               required
@@ -94,6 +117,7 @@ function AddTaskDialog({
             <Textarea
               id="description"
               value={description}
+              {...register("description")}
               onChange={(e) => setDescription(e.target.value)}
               className="col-span-3"
             />
@@ -106,17 +130,18 @@ function AddTaskDialog({
               <Label className="flex items-center gap-1">
                 <Input
                   type="radio"
+                  {...register("priority", { required: true })}
                   name="priority"
                   value="Low"
                   checked={priority === "Low"}
                   onChange={() => setPriority("Low")}
-                  required
                 />
                 <span className="text-green-500">Low</span>
               </Label>
               <Label className="flex items-center gap-1">
                 <Input
                   type="radio"
+                  {...register("priority", { required: true })}
                   name="priority"
                   value="Medium"
                   checked={priority === "Medium"}
@@ -127,6 +152,7 @@ function AddTaskDialog({
               <Label className="flex items-center gap-1">
                 <Input
                   type="radio"
+                  {...register("priority", { required: true })}
                   name="priority"
                   value="High"
                   checked={priority === "High"}

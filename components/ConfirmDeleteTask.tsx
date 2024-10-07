@@ -8,31 +8,32 @@ import {
 } from "./Dialog";
 import { Button } from "./ui/Button";
 
-interface Room {
+type Task = {
   id: number;
   title: string;
   description: string;
-  taskCount: number;
-}
+  priority: "High" | "Medium" | "Low";
+  completed: boolean;
+};
 
 interface ConfirmDeleteProps {
-  roomToDelete: Room | null;
-  setRoomToDelete: (room: Room | null) => void;
-  handleDeleteRoom: () => void;
+  taskToDelete: Task | null;
+  setTaskToDelete: (task: Task | null) => void;
+  handleDeleteTask: () => void;
 }
 
-export default function ConfirmDelete({
-  roomToDelete,
-  setRoomToDelete,
-  handleDeleteRoom,
+export default function ConfirmDeleteTask({
+  taskToDelete,
+  setTaskToDelete,
+  handleDeleteTask,
 }: ConfirmDeleteProps) {
   return (
-    <Dialog open={!!roomToDelete} onOpenChange={() => setRoomToDelete(null)}>
+    <Dialog open={!!taskToDelete} onOpenChange={() => setTaskToDelete(null)}>
       <DialogContent className="sm:max-w-[425px] bg-[#efffff] xs:max-w-[320px] rounded-lg">
         <DialogHeader>
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete the room "{roomToDelete?.title}"?
+            Are you sure you want to delete the task "{taskToDelete?.title}"?
             This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
@@ -40,14 +41,14 @@ export default function ConfirmDelete({
           <Button
             className=" border border-slate-500 hover:bg-slate-200 transition-all duration-100"
             variant="outline"
-            onClick={() => setRoomToDelete(null)}
+            onClick={() => setTaskToDelete(null)}
           >
             Cancel
           </Button>
           <Button
             className="border border-slate-500 text-white bg-red-500 hover:bg-red-600 hover:border-red-800 transition-all duration-100"
             variant="destructive"
-            onClick={handleDeleteRoom}
+            onClick={handleDeleteTask}
           >
             Confirm Delete
           </Button>
