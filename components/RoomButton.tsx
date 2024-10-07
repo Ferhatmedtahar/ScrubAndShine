@@ -8,8 +8,7 @@ function RoomButton({
   onClick?: () => void;
 }) {
   let hovering: string = "";
-  if (variant === "delete")
-    hovering = `hover:bg-red-500  hover:border-red-700 `;
+  if (variant === "delete") hovering = `hover:bg-red-500 hover:border-red-700 `;
   if (variant === "edit")
     hovering = `hover:bg-darkPrimary-300  hover:border-darkPrimary-200 `;
   if (variant === "base") hovering = `hover:bg-slate-200   `;

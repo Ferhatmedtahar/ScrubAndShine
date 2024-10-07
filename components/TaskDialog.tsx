@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { Plus } from "lucide-react";
+import { CircleAlert, Plus } from "lucide-react";
 
 import {
   Dialog,
@@ -96,7 +96,10 @@ function AddTaskDialog({
               : "Create a new task. Click create when you're done."}
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-4 py-4"
+        >
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="title" className="text-right">
               Title
@@ -107,12 +110,20 @@ function AddTaskDialog({
               {...register("title", { required: true })}
               onChange={(e) => setTitle(e.target.value)}
               className="col-span-3"
-              required
             />
           </div>
+          {errors.title && (
+            <span className="text-red-500 bg-red-200 p-1 text-sm rounded xs:max-w-[200px] self-center text-center flex gap-2 items-center">
+              <CircleAlert className="h-4 w-4" /> the title is required !
+            </span>
+          )}
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Description
+            <Label
+              htmlFor="room-description"
+              className="text-right flex flex-col gap-0.5"
+            >
+              Description{" "}
+              <span className="text-slate-400 text-xs">(Optional)</span>
             </Label>
             <Textarea
               id="description"
@@ -161,6 +172,11 @@ function AddTaskDialog({
                 <span className="text-red-500">High</span>
               </Label>
             </div>
+            {errors.priority && (
+              <span className="text-red-500 bg-red-200 p-1 text-sm rounded xs:max-w-[200px] self-center text-center flex gap-2 items-center">
+                <CircleAlert className="h-4 w-4" /> Priority is required!
+              </span>
+            )}
           </div>
 
           <Button type="submit" className="ml-auto">
