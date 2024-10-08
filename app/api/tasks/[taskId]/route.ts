@@ -72,13 +72,43 @@ export async function DELETE(
   { params }: { params: { taskId: string } }
 ) {
   try {
-    const { taskId } = params;
+    const { roomId } = await req.json();
+    const { taskId } = params; // Get taskId from the URL
 
+    // Check if the task exists before deleting
+    const taskExists = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
+    if (!taskExists) {
+      return NextResponse.json(
+        { error: "Task not found. Cannot delete non-existent task." },
+        { status: 404 }
+      );
+    }
+
+    // Delete the task
     await prisma.task.delete({
       where: { id: taskId },
     });
 
-    return NextResponse.json({ message: "Task deleted" }, { status: 200 });
+    // Update the room by pulling the task and decrementing taskCount
+    const updatedRoom = await prisma.room.update({
+      where: { id: roomId },
+      data: {
+        tasks: {
+          disconnect: { id: taskId },
+        },
+        taskCount: {
+          decrement: 1,
+        },
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Task deleted", updatedRoom },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to delete task" },

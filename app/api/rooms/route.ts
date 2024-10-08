@@ -37,6 +37,7 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
+        taskCount: 0,
         userId, // Make sure the userId is valid
       },
     });

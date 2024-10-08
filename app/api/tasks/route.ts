@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
   try {
     const { title, description, priority, roomId } = await req.json();
 
-    // Check if the room exists before creating the task
+    // Check if the room exists
     const roomExists = await prisma.room.findUnique({
       where: { id: roomId },
     });
@@ -17,13 +17,38 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create the task since the room exists
+    // Ensure there isn't already a task with the same title in the room
+    const existingTask = await prisma.task.findFirst({
+      where: { title, roomId },
+    });
+
+    if (existingTask) {
+      return NextResponse.json(
+        { error: "Task with the same title already exists in this room." },
+        { status: 409 }
+      );
+    }
+
+    // Create the task
     const newTask = await prisma.task.create({
       data: {
         title,
         description,
         priority,
         roomId,
+      },
+    });
+
+    // Add the task to the room and increment taskCount
+    const updatedRoom = await prisma.room.update({
+      where: { id: roomId },
+      data: {
+        tasks: {
+          connect: { id: newTask.id },
+        },
+        taskCount: {
+          increment: 1,
+        },
       },
     });
 

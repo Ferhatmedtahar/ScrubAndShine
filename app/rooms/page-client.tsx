@@ -13,40 +13,7 @@ interface Room {
   taskCount: number;
 }
 
-const roomsData: Room[] = [
-  {
-    id: 0,
-    title: "Living Room",
-    description: "Main living area with couch and TV",
-    taskCount: 5,
-  },
-  {
-    id: 1,
-    title: "Kitchen",
-    description: "Cooking and dining area",
-    taskCount: 8,
-  },
-  {
-    id: 2,
-    title: "Bedroom",
-    description: "Master bedroom with en-suite bathroom",
-    taskCount: 6,
-  },
-  {
-    id: 3,
-    title: "Guest Room",
-    description: "Comfortable room for guests",
-    taskCount: 3,
-  },
-  {
-    id: 4,
-    title: "Study Room",
-    description: "Work and study area",
-    taskCount: 4,
-  },
-];
-
-export default function PageClient() {
+export default function PageClient({ roomsData }: { roomsData: Room[] }) {
   const [rooms, setRooms] = useState(roomsData);
   const [isEditing, setIsEditing] = useState(false);
   const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
