@@ -25,9 +25,9 @@ export default function NavBar() {
               href={"/rooms"}
               className={`${
                 isActive(pathname, "/rooms")
-                  ? "underline-offset-4 underline text-accent-200"
+                  ? "underline-offset-4 underline text-[#00ff6f]"
                   : "text-gray-300"
-              } hover:text-accent-300 transition-colors duration-200`}
+              } hover:text-green-400 transition-colors duration-200  `}
             >
               Rooms
             </Link>
@@ -36,7 +36,7 @@ export default function NavBar() {
         </ul>
         {user ? (
           <Link href={"/profile"}>
-            <p className="text-gray-200 hover:text-accent-300 transition-colors duration-200">
+            <p className="cyan-gradient   font-semibold transition-colors duration-200">
               {user.name.toUpperCase()}
             </p>
           </Link>

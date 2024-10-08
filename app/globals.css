@@ -155,6 +155,24 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.blue-gradient {
+  background: linear-gradient(
+    120deg,
+    #0025ff 7.87%,
+    #0076ff 49%,
+    #0081ff 36.22%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cyan-gradient {
+  background: linear-gradient(120deg, #00f0cf 12.87%, #00ff6f 49%, #00f0ff 80%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 @layer base {
   /* Customize the scrollbar for WebKit-based browsers (like Chrome) */
   ::-webkit-scrollbar {
