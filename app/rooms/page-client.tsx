@@ -28,17 +28,87 @@ export default function PageClient({ roomsData }: { roomsData: Room[] }) {
     }
   }, [dialogOpen]);
 
-  const addRoom = (newRoom: Room) => {
-    if (isEditing && roomToEdit) {
-      setRooms(
-        rooms.map((room) =>
-          room.id === roomToEdit.id ? { ...newRoom, id: room.id } : room
-        )
-      );
-      setIsEditing(false);
-      setRoomToEdit(null);
-    } else {
-      setRooms([...rooms, { ...newRoom, id: rooms.length + 1 }]);
+  const addRoom = async (newRoom: Room) => {
+    try {
+      let response: Response;
+      let responseData: any;
+
+      if (isEditing && roomToEdit) {
+        // Update room
+        response = await fetch(`/api/rooms/${roomToEdit.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...newRoom, id: roomToEdit.id }),
+        });
+
+        // Parse the response
+        try {
+          responseData = await response.json();
+        } catch (jsonError) {
+          console.error("Failed to parse JSON during room update:", jsonError);
+          throw new Error(
+            "Failed to update room due to invalid response format."
+          );
+        }
+
+        if (response.ok) {
+          // Update the room in the state
+          const { updatedRoom } = responseData;
+          setRooms(
+            rooms.map((room) =>
+              room.id === roomToEdit.id ? { ...updatedRoom, id: room.id } : room
+            )
+          );
+          setIsEditing(false);
+          setRoomToEdit(null);
+        } else {
+          console.error(
+            "Failed to update room:",
+            responseData?.error || "Unknown error"
+          );
+          throw new Error(responseData?.error || "Failed to update room.");
+        }
+      } else {
+        // Create new room
+        response = await fetch(`/api/rooms`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newRoom),
+        });
+
+        // Parse the response
+        try {
+          responseData = await response.json();
+        } catch (jsonError) {
+          console.error(
+            "Failed to parse JSON during room creation:",
+            jsonError
+          );
+          throw new Error(
+            "Failed to create room due to invalid response format."
+          );
+        }
+
+        if (response.ok) {
+          // Add the new room to the state
+          const { room } = responseData;
+          setRooms([...rooms, room]);
+        } else {
+          console.error(
+            "Failed to create room:",
+            responseData?.error || "Unknown error"
+          );
+          throw new Error(responseData?.error || "Failed to create room.");
+        }
+      }
+    } catch (error) {
+      console.error("Error while adding/updating room:", error);
+      // Optional: Set an error message state for the UI
+      // setErrorMessage(error.message || "An error occurred while adding/updating the room.");
     }
   };
 
@@ -52,10 +122,22 @@ export default function PageClient({ roomsData }: { roomsData: Room[] }) {
     setRoomToDelete(room);
   };
 
-  const handleDeleteRoom = () => {
+  const handleDeleteRoom = async () => {
     if (roomToDelete) {
-      setRooms(rooms.filter((room) => room.id !== roomToDelete.id));
-      setRoomToDelete(null);
+      try {
+        const response = await fetch(`/api/rooms/${roomToDelete.id}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          setRooms(rooms.filter((room) => room.id !== roomToDelete.id));
+          setRoomToDelete(null);
+        } else {
+          console.error("Failed to delete room:", await response.json());
+        }
+      } catch (error) {
+        console.error("Error deleting room:", error);
+      }
     }
   };
 

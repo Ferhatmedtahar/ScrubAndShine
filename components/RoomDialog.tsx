@@ -19,7 +19,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "./ui/Button";
 
 interface Room {
-  id: number;
   title: string;
   description: string;
   taskCount: number;
@@ -78,7 +77,6 @@ export default function RoomDialog({
     description: string;
   }) => {
     const newRoom: Room = {
-      id: Math.random() * 50,
       title,
       description,
       taskCount: 0,

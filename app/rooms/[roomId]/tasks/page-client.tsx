@@ -40,20 +40,92 @@ const PageClient = ({
       setDialogOpen(false); // Close the dialog
     }
   }, [dialogOpen]);
-  const resetAllTasks = () => {
+
+  //!reset all tasks
+  const resetAllTasks = async () => {
+    // Create an array of promises for each task update
+    const updatePromises = tasks.map(async (task) => {
+      // Update task in the database to set completed to false
+      const response = await fetch(`/api/tasks/${task.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...task, completed: false }), // Send updated task
+      });
+
+      if (!response.ok) {
+        // Handle error if needed (e.g., log it)
+        console.error(`Failed to update task ${task.id}:`, response.statusText);
+      }
+
+      return response; // You can return the response if needed
+    });
+
+    // Wait for all updates to complete
+    await Promise.all(updatePromises);
+
+    // Update local state to reflect changes
     setTasks(tasks.map((task) => ({ ...task, completed: false })));
   };
 
-  const toggleTaskCompletion = (taskId: number) => {
+  const toggleTaskCompletion = async (taskId: number) => {
+    // Find the current task to get its current 'completed' status
+    const taskToUpdate = tasks.find((task) => task.id === taskId);
+
+    if (!taskToUpdate) return; // Ensure the task exists before proceeding
+
+    const newCompletedStatus = !taskToUpdate.completed; // Toggle the completed status
+
+    // Optimistically update the local state
     setTasks(
       tasks.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
+        task.id === taskId ? { ...task, completed: newCompletedStatus } : task
       )
     );
+
+    try {
+      // Send a PUT request to the backend to update the task
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ completed: newCompletedStatus }), // Send the new completed status
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to update task ${taskId}: ${response.statusText}`
+        );
+      }
+
+      const updatedTask = await response.json(); // Get the updated task from the response (optional)
+      console.log("Task updated successfully:", updatedTask);
+    } catch (error) {
+      console.error("Error updating task:", error);
+
+      // Optional: Revert the state if the API call fails
+      setTasks(
+        tasks.map((task) =>
+          task.id === taskId
+            ? { ...task, completed: taskToUpdate.completed }
+            : task
+        )
+      );
+    }
   };
 
-  const addTask = (newTask: Task) => {
+  const addTask = async (newTask: Task) => {
     if (isEditing && taskToEdit) {
+      const updatedTask = await fetch(`/api/tasks/${taskToEdit.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...newTask, id: taskToEdit.id }),
+      });
+      const data = await updatedTask.json();
       setTasks(
         tasks.map((task) =>
           task.id === taskToEdit.id ? { ...newTask, id: task.id } : task
@@ -62,7 +134,15 @@ const PageClient = ({
       setIsEditing(false);
       setTaskToEdit(null);
     } else {
-      setTasks([...tasks, { ...newTask, id: tasks.length + 1 }]);
+      const createdTask = await fetch(`/api/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...newTask, roomId }),
+      });
+      const data = await createdTask.json();
+      setTasks([...tasks, { ...newTask, id: data.id }]);
     }
   };
 
@@ -75,8 +155,15 @@ const PageClient = ({
     setTaskToDelete(task); // Open delete confirmation dialog by setting the room
   };
 
-  const handleDeleteTask = () => {
+  const handleDeleteTask = async () => {
     if (taskToDelete) {
+      await fetch(`/api/tasks/${taskToDelete.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: taskToDelete.id, roomId }),
+      });
       setTasks(tasks.filter((room) => room.id !== taskToDelete.id));
       setTaskToDelete(null);
     }

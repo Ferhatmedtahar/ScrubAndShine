@@ -1,13 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import slugify from "slugify";
 
 const prisma = new PrismaClient();
 
 // Create a Room
 export async function POST(req: Request) {
   try {
-    const { title, description, userId } = await req.json();
+    const userId = "670426cf26193be28e49fc48";
+    const { title, description } = await req.json();
 
+    // Ensure user exists
     const userExists = await prisma.user.findUnique({
       where: { id: userId },
     });
@@ -18,27 +21,37 @@ export async function POST(req: Request) {
         { status: 404 }
       );
     }
+
+    // Generate slug using slugify
+    const slug = slugify(title, {
+      lower: true, // Convert to lowercase
+      strict: true, // Remove special characters
+      trim: true, // Trim whitespace
+    });
+
+    // Ensure slug is unique
     const roomExists = await prisma.room.findUnique({
-      where: { title },
+      where: { slug },
     });
 
     if (roomExists) {
       return NextResponse.json(
         {
           error:
-            "Room with this title already exists. Please choose a different title.",
+            "Room with this title or slug already exists. Please choose a different title.",
         },
         { status: 409 }
       );
     }
 
-    // Create the room since the user exists
+    // Create the room since the slug is unique
     const room = await prisma.room.create({
       data: {
         title,
         description,
+        slug,
         taskCount: 0,
-        userId, // Make sure the userId is valid
+        userId,
       },
     });
 
@@ -47,6 +60,7 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error creating room:", error);
     return NextResponse.json(
       { error: "Failed to create room" },
       { status: 500 }
@@ -55,7 +69,6 @@ export async function POST(req: Request) {
     await prisma.$disconnect();
   }
 }
-
 // Get All Rooms
 export async function GET() {
   try {

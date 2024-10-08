@@ -11,10 +11,8 @@ export default function RoomItem({
   onEdit: any;
   setRoomToDelete: any;
 }) {
-  const { title, description, taskCount } = room;
-  // title={room.title}
-  // description={room.description}
-  // tasksCount={room.taskCount}
+  const { title, description, taskCount, slug } = room;
+
   return (
     <div className="border border-darkPrimary-300  bg-green-100/10 rounded-lg p-4 hover:bg-bg-300 transition-all duration-150">
       <div className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -42,7 +40,7 @@ export default function RoomItem({
           <RoomButton variant="base">
             <Link
               className="flex items-center text-sm font-medium px-0.5 "
-              href={`/rooms/${title.toLowerCase().replace(" ", "-")}/tasks`}
+              href={`/rooms/${slug}/tasks`}
             >
               View Tasks <ArrowRight className="ml-2 h-4 w-4" />
             </Link>

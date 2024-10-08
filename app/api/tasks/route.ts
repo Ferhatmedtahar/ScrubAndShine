@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
 
     // Check if the room exists
     const roomExists = await prisma.room.findUnique({
-      where: { id: roomId },
+      where: { slug: roomId },
     });
 
     if (!roomExists) {
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     // Ensure there isn't already a task with the same title in the room
     const existingTask = await prisma.task.findFirst({
-      where: { title, roomId },
+      where: { title, roomId: roomExists.id },
     });
 
     if (existingTask) {
@@ -35,13 +35,13 @@ export async function POST(req: NextRequest) {
         title,
         description,
         priority,
-        roomId,
+        roomId: roomExists.id,
       },
     });
 
     // Add the task to the room and increment taskCount
     const updatedRoom = await prisma.room.update({
-      where: { id: roomId },
+      where: { id: roomExists.id },
       data: {
         tasks: {
           connect: { id: newTask.id },
@@ -53,9 +53,11 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(newTask, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
+    // Log the error to inspect what went wrong
+    console.error("Error creating task:", error);
     return NextResponse.json(
-      { error: "Failed to create task" },
+      { error: "Failed to create task", details: error.message }, // include error message in response
       { status: 500 }
     );
   } finally {
@@ -63,22 +65,49 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(
+  req: Request,
+  { params }: { params: { roomId: string } }
+) {
+  // const url = new URL(req.url);
+  // // const roomSlug = params.roomId; // Extract room slug from params
+
+  // // If you need to extract search params (e.g., ?search=value)
+  // const searchParam = url.searchParams.get("roomId");
+  // console.log("searchParam:", searchParam);
+  // console.log("Params:", params);
+  const url = new URL(req.url);
+  const searchParam = url.searchParams.get("roomId")!;
+  const roomSlug = searchParam; // Extract room slug from params
+
   try {
+    // Find the room using the slug
+    const room = await prisma.room.findUnique({
+      where: { slug: roomSlug }, // Make sure the room model has a slug field
+    });
+
+    if (!room) {
+      return NextResponse.json({ error: "Room not found" }, { status: 404 });
+    }
+
+    // Now fetch tasks associated with the room ID
     const tasks = await prisma.task.findMany({
+      where: {
+        roomId: room.id, // Use the room ID to filter tasks
+      },
       include: {
-        room: true, // Include room data
+        room: true, // Include room data if needed
       },
     });
 
     return NextResponse.json({ status: "success", tasks }, { status: 200 });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch tasks" },
       { status: 500 }
     );
   } finally {
-    await prisma.$disconnect();
+    await prisma.$disconnect(); // Ensure you disconnect Prisma after the operation
   }
 }
