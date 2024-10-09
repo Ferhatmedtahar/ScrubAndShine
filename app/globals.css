@@ -207,3 +207,30 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.loading-dots::after {
+  content: "..."; /* Adjust to 3 dots */
+  animation: dots 1s steps(5, end) infinite;
+  color: #000000; /* Green color for the dots */
+}
+
+@keyframes dots {
+  0%,
+  20% {
+    color: rgba(48, 175, 50, 0.8); /* Transparent green */
+    text-shadow: 0.25em 0 0 rgba(48, 175, 50, 0.8),
+      0.5em 0 0 rgba(48, 175, 50, 0.8);
+  }
+  40% {
+    color: #30af5b; /* Green color */
+    text-shadow: 0.25em 0 0 rgba(48, 175, 50, 0.8),
+      0.5em 0 0 rgba(48, 175, 50, 0.8);
+  }
+  60% {
+    text-shadow: 0.25em 0 0 #30af5b, 0.5em 0 0 rgba(48, 175, 50, 0.8);
+  }
+  80%,
+  100% {
+    text-shadow: 0.25em 0 0 #30af5b, 0.5em 0 0 #30af5b;
+  }
+}

@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
     });
-
+    console.log(user);
     if (!user) {
       return NextResponse.json(
         { error: "Invalid token or user not found" },
@@ -51,23 +51,15 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // Set the cookie with the JWT
-
-    // // Set the token in an HTTP-only cookie
-    // const cookie = cookies().set("token", jwtToken, {
-    //   httpOnly: true,
-    //   maxAge: 60 * 60 * 24 * 60,
-    //   secure: process.env.NODE_ENV === "production",
-    //   path: "/",
-    // });
-
     const response = NextResponse.redirect(new URL("/rooms", req.url));
-    response.headers.set(
-      "token",
-      `${jwtToken}; HttpOnly; Max-Age=${60 * 60 * 24 * 60}; Path=/; Secure=${
-        process.env.NODE_ENV === "production"
-      }`
-    );
+    response.cookies.set("jwt", jwtToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 60, // Set cookie expiration (e.g., 60 days)
+      path: "/",
+      secure: true,
+      //  process.env.NODE_ENV === "production"
+    });
+
     return response;
   } catch (error) {
     console.error("Error verifying token:", error);

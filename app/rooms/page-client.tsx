@@ -4,6 +4,8 @@ import ConfirmDelete from "@/components/ConfirmDelete";
 import RoomDialog from "@/components/RoomDialog";
 import RoomsList from "@/components/RoomsList";
 import Stats from "@/components/Stats";
+import basket from "@/public/basket.png";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface Room {
@@ -13,11 +15,18 @@ interface Room {
   taskCount: number;
 }
 
-export default function PageClient({ roomsData }: { roomsData: Room[] }) {
+export default function PageClient({
+  roomsData,
+  jwt,
+}: {
+  roomsData: Room[];
+  jwt: string;
+}) {
   const [rooms, setRooms] = useState(roomsData);
   const [isEditing, setIsEditing] = useState(false);
   const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
   const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);
+
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -72,7 +81,7 @@ export default function PageClient({ roomsData }: { roomsData: Room[] }) {
         }
       } else {
         // Create new room
-        response = await fetch(`/api/rooms`, {
+        response = await fetch(`/api/rooms?token=${jwt}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -142,7 +151,7 @@ export default function PageClient({ roomsData }: { roomsData: Room[] }) {
   };
 
   return (
-    <main className="max-container padding-container flex flex-col gap-4">
+    <main className="max-container padding-container flex flex-col gap-4 ">
       <div className="flex flex-col items-center gap-2 md:flex-row md:justify-between">
         <Stats />
         <RoomDialog
@@ -152,12 +161,32 @@ export default function PageClient({ roomsData }: { roomsData: Room[] }) {
           setOpen={setDialogOpen}
         />
       </div>
+      {rooms.length > 0 ? (
+        <RoomsList
+          setRoomToDelete={DeleteRoom}
+          roomsData={rooms}
+          onEdit={handleEditRoom}
+        />
+      ) : (
+        <div className="m-4 flex flex-col py-10 text-center text-xl text-slate-400 opacity-80 hover:opacity-100 transition-all duration-100">
+          <p className="mb-4">
+            It looks like you haven’t created any rooms yet!
+          </p>
+          <div className="flex items-center justify-center gap-2">
+            <p className="text-lg ">
+              Start by adding rooms to get things rolling
+            </p>
+            <Image
+              src={basket}
+              alt="logo"
+              width={30}
+              height={30}
+              className="rotate-12  opacity-70 "
+            />
+          </div>
+        </div>
+      )}
 
-      <RoomsList
-        setRoomToDelete={DeleteRoom}
-        roomsData={rooms}
-        onEdit={handleEditRoom}
-      />
       <ConfirmDelete
         roomToDelete={roomToDelete}
         setRoomToDelete={setRoomToDelete}

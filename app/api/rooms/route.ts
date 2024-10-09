@@ -1,13 +1,30 @@
-import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/verifyToken";
+import { NextRequest, NextResponse } from "next/server";
 import slugify from "slugify";
 
-const prisma = new PrismaClient();
+const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 // Create a Room
 export async function POST(req: Request) {
   try {
-    const userId = "670426cf26193be28e49fc48";
+    const { searchParams } = new URL(req.url);
+    const token = searchParams.get("token");
+
+    if (!token) {
+      console.error("Token not found in query params");
+      return NextResponse.redirect(new URL("/login", req.url)); // Redirect to login if no token
+    }
+
+    // Verify and decode the token to get the user ID
+    const decoded = verifyToken(token); // Implement this function to verify the token
+    if (!decoded || !decoded.userId) {
+      console.error("Invalid token or user ID not found");
+      return NextResponse.redirect(new URL("/login", req.url)); // Redirect to login if token is invalid
+    }
+
+    const userId = decoded.userId;
+
     const { title, description } = await req.json();
 
     // Ensure user exists
@@ -22,14 +39,12 @@ export async function POST(req: Request) {
       );
     }
 
-    // Generate slug using slugify
     const slug = slugify(title, {
-      lower: true, // Convert to lowercase
-      strict: true, // Remove special characters
-      trim: true, // Trim whitespace
+      lower: true,
+      strict: true,
+      trim: true,
     });
 
-    // Ensure slug is unique
     const roomExists = await prisma.room.findUnique({
       where: { slug },
     });
@@ -69,20 +84,50 @@ export async function POST(req: Request) {
     await prisma.$disconnect();
   }
 }
-// Get All Rooms
-export async function GET() {
+
+/*
+
+
+!  // REVIEW 
+
+! Get All Rooms
+
+*/
+export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const token = searchParams.get("token");
+
+    if (!token) {
+      console.error("Token not found in query params");
+      return NextResponse.redirect(new URL("/login", req.url)); // Redirect to login if no token
+    }
+
+    // Verify and decode the token to get the user ID
+    const decoded = verifyToken(token); // Implement this function to verify the token
+    if (!decoded || !decoded.userId) {
+      console.error("Invalid token or user ID not found");
+      return NextResponse.redirect(new URL("/login", req.url)); // Redirect to login if token is invalid
+    }
+
+    const userId = decoded.userId;
+    console.log("User ID:", userId);
+
     const rooms = await prisma.room.findMany({
+      where: { userId },
       include: {
-        tasks: true, // Include the tasks related to each room
-        user: true, // Include the user data
+        tasks: true,
+        user: true,
       },
     });
 
     return NextResponse.json(rooms, { status: 200 });
   } catch (error) {
+    console.error("Failed to fetch rooms:", error);
+
     return NextResponse.json(
       { error: "Failed to fetch rooms" },
+
       { status: 500 }
     );
   } finally {
