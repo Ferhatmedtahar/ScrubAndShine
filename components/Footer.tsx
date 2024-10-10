@@ -1,21 +1,12 @@
 import { Github, Linkedin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import FooterButton from "./FooterButton";
 
 export default function Footer() {
   return (
     <footer className="max-Container padding-container p-8 h-40 bg-darkPrimary-300 border-t-2 border-gray-400 flex justify-center items-center sm:gap-8 xs:gap-2">
-      <Link href="/" className=" gap-4 z-10">
-        <Image
-          className="cursor-pointer rounded-full aspect-square  sm:h-14 sm:w-14 xs:h-10 xs:w-10 mr-6 "
-          alt="logo"
-          src={"/logo1.png"}
-          width={55}
-          height={55}
-          quality={95}
-        />
-      </Link>
-
+      <FooterButton />
       <div className="flex flex-col gap-4 ">
         <h1 className="text-lg lg:text-xl cursor-default  text-black font-semibold text-center default-underline hover:text-blue-950 transition-all duration-100 ">
           Scrub&Shine

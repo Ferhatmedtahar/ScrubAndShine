@@ -1,19 +1,26 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Button } from "./Button";
 import Logo from "./Logo";
+import Profile from "./Profile";
 
 function isActive(pathname: string, href: string) {
   return pathname.startsWith(href);
 }
 type User = {
   name: string;
+  email: string;
+  id: string;
+  verified: boolean;
+  token: string;
 };
 
-export default function NavBar() {
+export default function NavBar({ user }: { user: User }) {
   const pathname = usePathname();
-  const user: User = { name: "ferhattaher" };
+  const [userName, setUserName] = useState<string>(user.name);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   return (
     <nav className="bg-[#0843a8] shadow-md py-2 px-4">
@@ -32,20 +39,27 @@ export default function NavBar() {
               Rooms
             </Link>
           </li>
-          {/* Add more navigation items here if needed */}
         </ul>
         {user ? (
-          <Link href={"/profile"}>
-            <p className="cyan-gradient   font-semibold transition-colors duration-200">
-              {user.name.toUpperCase()}
-            </p>
-          </Link>
+          <p
+            onClick={() => setIsProfileModalOpen(true)}
+            className="cyan-gradient cursor-pointer border border-blue-500 px-2 py-1 rounded-lg  font-semibold transition-colors duration-200"
+          >
+            {userName.toUpperCase()}
+          </p>
         ) : (
           <Button background="bg-primary-300" hoverBackground="bg-primary-200">
             <Link href={"/login"}>Login</Link>
           </Button>
         )}
       </div>
+      <Profile
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        name={user.name}
+        userId={user.id}
+        updateUser={setUserName}
+      />
     </nav>
   );
 }

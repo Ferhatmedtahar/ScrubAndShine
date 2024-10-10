@@ -8,25 +8,50 @@ export async function GET(
   const { userId } = params;
 
   try {
-    // Fetch total rooms for the user
-    const totalRooms = await prisma.room.count({
-      where: { userId: userId }, // Adjust based on your relationship
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+    return NextResponse.json(
+      {
+        status: "success",
+        user,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching user stats:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch user stats" },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: { userId: string } }
+) {
+  const { userId } = params;
+  const { name } = await req.json();
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name,
+      },
     });
 
-    // Fetch total tasks for the user
-    // const tasks = await prisma.task.findMany({
-    //   where: { userId: userId }, // Adjust based on your relationship
-    // });
-
-    // const totalTasks = tasks.length;
-    // const completedTasks = tasks.filter((task) => task.completed).length; // Assuming you have a `completed` boolean field
+    if (!updatedUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
     return NextResponse.json(
       {
         status: "success",
-        totalRooms,
-        // totalTasks,
-        // completedTasks,
+        updatedUser,
       },
       { status: 200 }
     );
