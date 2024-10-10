@@ -17,10 +17,10 @@ type User = {
   token: string;
 };
 
-export default function NavBar({ user }: { user: User }) {
+export default function NavBar({ user }: { user: User | any }) {
   const pathname = usePathname();
-  const [userName, setUserName] = useState<string>(user.name);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [userName, setUserName] = useState<string>(user?.name ?? "Guest");
 
   return (
     <nav className="bg-[#0843a8] shadow-md py-2 px-4">
@@ -48,18 +48,20 @@ export default function NavBar({ user }: { user: User }) {
             {userName.toUpperCase()}
           </p>
         ) : (
-          <Button background="bg-primary-300" hoverBackground="bg-primary-200">
+          <Button background="bg-primary-100" hoverBackground="bg-primary-200">
             <Link href={"/login"}>Login</Link>
           </Button>
         )}
       </div>
-      <Profile
-        isOpen={isProfileModalOpen}
-        onClose={() => setIsProfileModalOpen(false)}
-        name={user.name}
-        userId={user.id}
-        updateUser={setUserName}
-      />
+      {user && (
+        <Profile
+          isOpen={isProfileModalOpen}
+          onClose={() => setIsProfileModalOpen(false)}
+          name={user.name}
+          userId={user.id}
+          updateUser={setUserName}
+        />
+      )}
     </nav>
   );
 }

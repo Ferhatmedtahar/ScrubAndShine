@@ -19,17 +19,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const jwt = cookies().get("jwt")?.value!;
-  let userId;
+  let user = null;
 
-  const decoded = verifyToken(jwt)!; // Implement this function to verify the token
-
-  if (!decoded || !decoded.userId) {
-    userId = null;
+  if (jwt) {
+    const decoded = verifyToken(jwt); // Assuming this is the token verification
+    if (decoded && decoded.userId) {
+      const data = await fetch(
+        `http://localhost:3000/api/users/${decoded.userId}`
+      );
+      const result = await data.json();
+      user = result?.user ?? null;
+    }
   }
-
-  userId = decoded.userId;
-  const data = await fetch(`http://localhost:3000/api/users/${userId}`);
-  const { user } = await data.json();
 
   return (
     <html lang="en">
