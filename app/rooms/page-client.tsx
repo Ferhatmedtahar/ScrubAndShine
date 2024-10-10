@@ -6,8 +6,8 @@ import RoomsList from "@/components/RoomsList";
 import Stats from "@/components/Stats";
 import basket from "@/public/basket.png";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
 interface Room {
   id: number;
   title: string;
@@ -16,12 +16,16 @@ interface Room {
 }
 
 export default function PageClient({
+  stats,
   roomsData,
   jwt,
 }: {
+  stats: any;
   roomsData: Room[];
   jwt: string;
 }) {
+  const router = useRouter();
+
   const [rooms, setRooms] = useState(roomsData);
   const [isEditing, setIsEditing] = useState(false);
   const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
@@ -65,6 +69,7 @@ export default function PageClient({
         if (response.ok) {
           // Update the room in the state
           const { updatedRoom } = responseData;
+          router.refresh();
           setRooms(
             rooms.map((room) =>
               room.id === roomToEdit.id ? { ...updatedRoom, id: room.id } : room
@@ -105,6 +110,7 @@ export default function PageClient({
         if (response.ok) {
           // Add the new room to the state
           const { room } = responseData;
+          router.refresh();
           setRooms([...rooms, room]);
         } else {
           console.error(
@@ -139,6 +145,7 @@ export default function PageClient({
         });
 
         if (response.ok) {
+          router.refresh();
           setRooms(rooms.filter((room) => room.id !== roomToDelete.id));
           setRoomToDelete(null);
         } else {
@@ -153,7 +160,7 @@ export default function PageClient({
   return (
     <main className="max-container padding-container flex flex-col gap-4 ">
       <div className="flex flex-col items-center gap-2 md:flex-row md:justify-between">
-        <Stats />
+        <Stats stats={stats} />
         <RoomDialog
           onAddRoom={addRoom}
           room={roomToEdit}

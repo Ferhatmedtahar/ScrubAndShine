@@ -3,10 +3,10 @@ import ConfirmDeleteTask from "@/components/ConfirmDeleteTask";
 import TaskCard from "@/components/TaskCard";
 import AddTaskDialog from "@/components/TaskDialog";
 import { Button } from "@/components/ui/Button";
+import office from "@/public/office-cleaning.png";
 import { ArrowLeft, RotateCcw } from "lucide-react";
-import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
-
 type Task = {
   id: number;
   title: string;
@@ -23,7 +23,6 @@ const PageClient = ({
   params: { roomId: string }; // Ensure this matches the expected structure
 }) => {
   const { roomId } = params;
-
   const roomSlug = roomId.split("-").join(" ");
 
   const [tasks, setTasks] = useState<Task[]>(tasksData);
@@ -168,17 +167,17 @@ const PageClient = ({
       setTaskToDelete(null);
     }
   };
-
+  //REVIEW
   return (
     <div className="max-container padding-container flex flex-col gap-4 mb-8">
       <nav className=" sticky top-0.5 z-10 bg-white shadow-md container mx-auto px-4 py-4">
-        <Link
+        <a
           href="/rooms"
           className="flex items-center text-primary max-w-[150px] hover:text-primary-100 hover:underline hover:underline-offset-2 duration-150 transition-all"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Rooms
-        </Link>
+        </a>
       </nav>
 
       <div className="flex sm:justify-between items-center flex-col sm:flex-row gap-8 ">
@@ -200,16 +199,33 @@ const PageClient = ({
       </div>
 
       <div className="space-y-4">
-        {tasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            toggleTaskCompletion={() => toggleTaskCompletion(task.id)}
-            onEdit={() => handleEditTask(task)} // Trigger edit
-            // onDelete={() => handleDeleteTask(task.id)} // Trigger delete
-            setTaskToDelete={DeleteTask}
-          />
-        ))}
+        {tasks.length === 0 ? (
+          <div className="m-4 cursor-default flex flex-col py-10 text-center text-xl text-slate-400 opacity-80 hover:opacity-100 transition-all duration-100">
+            <div className="flex items-center justify-center gap-2">
+              <p className="text-lg ">
+                Start by adding Tasks to start your cleaning
+              </p>
+              <Image
+                src={office}
+                alt="logo"
+                width={35}
+                height={35}
+                className="  opacity-70 "
+              />
+            </div>
+          </div>
+        ) : (
+          tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              toggleTaskCompletion={() => toggleTaskCompletion(task.id)}
+              onEdit={() => handleEditTask(task)} // Trigger edit
+              // onDelete={() => handleDeleteTask(task.id)} // Trigger delete
+              setTaskToDelete={DeleteTask}
+            />
+          ))
+        )}
       </div>
       <ConfirmDeleteTask
         taskToDelete={taskToDelete}

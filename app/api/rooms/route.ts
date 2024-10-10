@@ -116,12 +116,22 @@ export async function GET(req: NextRequest) {
     const rooms = await prisma.room.findMany({
       where: { userId },
       include: {
-        tasks: true,
-        user: true,
+        tasks: {
+          select: {
+            id: true,
+            completed: true,
+          },
+        },
       },
     });
 
-    return NextResponse.json(rooms, { status: 200 });
+    const roomsWithTaskCounts = rooms.map((room) => ({
+      ...room,
+      totalTasks: room.tasks.length,
+      completedTasks: room.tasks.filter((task) => task.completed).length,
+    }));
+
+    return NextResponse.json({ rooms, roomsWithTaskCounts }, { status: 200 });
   } catch (error) {
     console.error("Failed to fetch rooms:", error);
 

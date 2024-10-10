@@ -69,13 +69,6 @@ export async function GET(
   req: Request,
   { params }: { params: { roomId: string } }
 ) {
-  // const url = new URL(req.url);
-  // // const roomSlug = params.roomId; // Extract room slug from params
-
-  // // If you need to extract search params (e.g., ?search=value)
-  // const searchParam = url.searchParams.get("roomId");
-  // console.log("searchParam:", searchParam);
-  // console.log("Params:", params);
   const url = new URL(req.url);
   const searchParam = url.searchParams.get("roomId")!;
   const roomSlug = searchParam; // Extract room slug from params

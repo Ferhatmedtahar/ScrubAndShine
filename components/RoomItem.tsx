@@ -1,5 +1,5 @@
 import { ArrowRight, Edit, Trash2 } from "lucide-react";
-import Link from "next/link";
+
 import RoomButton from "./RoomButton";
 
 export default function RoomItem({
@@ -38,12 +38,12 @@ export default function RoomItem({
         <div className=" flex justify-between items-center ">
           <span className="text-sm font-medium">{taskCount} tasks</span>
           <RoomButton variant="base">
-            <Link
+            <a
               className="flex items-center text-sm font-medium px-0.5 "
               href={`/rooms/${slug}/tasks`}
             >
               View Tasks <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
+            </a>
           </RoomButton>
         </div>
       </div>

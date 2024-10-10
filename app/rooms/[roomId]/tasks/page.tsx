@@ -4,6 +4,8 @@ export const metadata = {
   title: "Tasks",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ params }: { params: { roomId: string } }) {
   const roomSlug = params.roomId; // This is the slug from the URL
 
@@ -23,6 +25,5 @@ export default async function Page({ params }: { params: { roomId: string } }) {
   }
 
   const tasksData = res.tasks;
-
   return <PageClient tasksData={tasksData} params={params} />;
 }
