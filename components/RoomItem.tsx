@@ -32,9 +32,15 @@ export default function RoomItem({
         </div>
       </div>
       <div>
-        <p className="text-xs text-gray-600 mb-4 sm:text-sm md:text-base ">
-          {description}
-        </p>
+        {description ? (
+          <p className="text-xs text-gray-600 mb-4 sm:text-sm md:text-base ">
+            {description}
+          </p>
+        ) : (
+          <p className="text-xs text-gray-400 mb-4 sm:text-sm md:text-base ">
+            no description specified
+          </p>
+        )}
         <div className=" flex justify-between items-center ">
           <span className="text-sm font-medium">{taskCount} tasks</span>
           <RoomButton variant="base">

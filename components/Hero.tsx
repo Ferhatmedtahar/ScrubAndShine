@@ -1,5 +1,5 @@
 import { FlipWords } from "@/components/ui/flip-words";
-import { Button } from "./Button";
+import { Button } from "./ButtonMe";
 // Make sure this is correctly imported
 
 export default function Hero() {

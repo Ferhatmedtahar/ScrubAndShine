@@ -1,11 +1,23 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import PageClient from "./page-client";
 export const metadata = {
   title: "Rooms",
 };
+function isValidJWT(token: string): boolean {
+  const jwtPattern = /^[A-Za-z0-9-_]+(\.[A-Za-z0-9-_]+){2}$/;
+  return jwtPattern.test(token);
+}
 
 export default async function Page() {
-  const jwt = cookies().get("jwt")?.value!;
+  const jwt = cookies().get("jwt")?.value;
+  if (!jwt) {
+    redirect("/login");
+  }
+  if (!isValidJWT(jwt)) {
+    redirect("/login");
+  }
+
   const data = await fetch(`http://localhost:3000/api/rooms?token=${jwt}`, {
     cache: "no-store",
   });
@@ -25,6 +37,6 @@ export default async function Page() {
       0
     ),
   };
-  console.log(stats);
+
   return <PageClient roomsData={roomsData} jwt={jwt} stats={stats} />;
 }

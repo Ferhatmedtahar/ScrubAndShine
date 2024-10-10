@@ -77,13 +77,19 @@ export default function TaskCard({
         </div>
       </CardHeader>
       <CardContent>
-        <p
-          className={`text-sm text-muted-foreground ${
-            expanded ? "" : "line-clamp-2"
-          }`}
-        >
-          {description}
-        </p>
+        {description ? (
+          <p
+            className={`text-sm text-muted-foreground ${
+              expanded ? "" : "line-clamp-2"
+            }`}
+          >
+            {description}
+          </p>
+        ) : (
+          <p className="text-xs text-gray-400 mb-4 sm:text-sm md:text-base ">
+            no description specified
+          </p>
+        )}
         {expanded && (
           <div className="mt-4 flex justify-end space-x-2">
             <Button

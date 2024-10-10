@@ -1,33 +1,28 @@
-import { JWTPayload, jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
-// Secret for JWT verification
-const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+const secret = process.env.JWT_SECRET;
+if (!secret) {
+  throw new Error("JWT_SECRET is not defined");
+}
 
-// Middleware to protect specific routes
+const bufferSecret = Buffer.from(secret);
+// new TextEncoder().encode(process.env.JWT_SECRET);
+
 export async function middleware(request: NextRequest) {
+  console.log("middleware called");
   const { pathname } = request.nextUrl;
   const protectedRoutes = ["/profile", "/rooms", "/tasks"];
 
-  // Check if the route is protected
   if (protectedRoutes.includes(pathname)) {
     const userId = await authenticate(request);
     if (userId) {
-      console.log("userididid", userId);
-      // const response = NextResponse.next();
-      // response.cookies.set("userId", userId);
-      // return response;
+      // If authenticated, continue
       return NextResponse.next();
     }
-
     // If not authenticated, redirect to login
-    request.nextUrl.searchParams.set("from", request.nextUrl.pathname);
-    request.nextUrl.pathname = "/login";
-    console.log(request.nextUrl);
-    return NextResponse.redirect(request.nextUrl);
+    return NextResponse.redirect("/login");
   }
 
-  // Continue for routes that don't require authentication
   return NextResponse.next();
 }
 
@@ -37,26 +32,21 @@ export const config = {
 };
 
 // Authentication function to verify JWT and extract userId
-export async function authenticate(req: NextRequest): Promise<string | false> {
+export async function authenticate(req: NextRequest): Promise<boolean> {
   // Get the JWT from cookies
   const token = req.cookies.get("jwt")?.value || "";
 
-  // If no token is found, return false
   if (!token) {
     return false;
   }
-
-  // Verify the token
-  const { payload } = await jwtVerify(token, secret);
-  const userPayload = payload as JWTPayload;
-  const userId = userPayload.userId as string;
-
-  // If no userId is found in the token, return false
-  if (!userId) {
-    console.error("User ID not found in token payload");
+  if (!isValidJWT(token)) {
     return false;
   }
 
-  // Return userId if authenticated
-  return userId;
+  return true;
+}
+
+function isValidJWT(token: string): boolean {
+  const jwtPattern = /^[A-Za-z0-9-_]+(\.[A-Za-z0-9-_]+){2}$/;
+  return jwtPattern.test(token);
 }

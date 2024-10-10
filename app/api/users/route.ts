@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const { email } = await req.json();
-    console.log(email);
+
     if (!email) {
       return NextResponse.json(
         { error: " email  is missing" },
@@ -40,46 +40,6 @@ export async function GET() {
     console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch users" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PATCH(req: NextRequest) {
-  try {
-    const { name, id } = await req.json();
-    if (!name || !id) {
-      return NextResponse.json(
-        { error: "Name or ID missing" },
-        { status: 400 }
-      );
-    }
-    const updatedUser = await prisma.user.update({
-      where: { id }, // The ID of the room to be updated
-      data: {
-        name,
-      },
-    });
-
-    return NextResponse.json(updatedUser, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to update user" },
-      { status: 500 }
-    );
-  }
-}
-export async function DELETE(req: NextRequest) {
-  try {
-    const data = await req.json();
-    await prisma.user.delete({
-      where: { id: data.id }, // The ID of the room to be deleted
-    });
-
-    return NextResponse.json({ message: "user deleted" }, { status: 204 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to delete user" },
       { status: 500 }
     );
   }

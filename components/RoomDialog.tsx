@@ -12,22 +12,31 @@ import {
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { Textarea } from "@/components/TextArea";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { CircleAlert, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import * as Yup from "yup";
 import { Button } from "./ui/Button";
 
 interface Room {
   title: string;
-  description: string;
+  description?: string;
   taskCount: number;
 }
 
 type Inputs = {
   title: string;
-  description: string;
+  description?: string;
 };
+const roomSchema = Yup.object().shape({
+  title: Yup.string()
+    .required("The title is required!")
+    .min(2, "Title should be at least 2 characters long"),
+  description: Yup.string()
+    .max(150, "Description should be less than 150 characters")
+    .optional(),
+});
 
 export default function RoomDialog({
   onAddRoom,
@@ -46,7 +55,11 @@ export default function RoomDialog({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    resolver: yupResolver(roomSchema), // Integrating Yup with React Hook Form
+  });
+
+  // !submit handler
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     handleAddRoom(data);
   };
@@ -55,17 +68,15 @@ export default function RoomDialog({
   const [roomDescription, setRoomDescription] = useState("");
   useEffect(() => {
     if (!open) {
-      // Reset the form when the dialog is closed
       setRoomTitle("");
       setRoomDescription("");
       reset();
-      return; // Exit early to avoid unnecessary updates
+      return;
     }
 
     if (room !== null) {
-      // If a room is provided, populate the form with its data
       setRoomTitle(room.title);
-      setRoomDescription(room.description);
+      setRoomDescription(room?.description ?? "");
     }
   }, [room, open]);
 
@@ -74,7 +85,7 @@ export default function RoomDialog({
     description,
   }: {
     title: string;
-    description: string;
+    description?: string;
   }) => {
     const newRoom: Room = {
       title,

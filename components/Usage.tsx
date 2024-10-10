@@ -5,10 +5,11 @@ import HowToStep from "./HowToStep";
 export default function Usage() {
   const steps = [
     {
-      text: "Click 'Login Now' and fill in your email",
+      text: "Click 'Login or Get started' and fill in your email",
     },
     { text: "Check your email for a login link" },
     { text: "Click the link to access your Rooms page" },
+    { text: "to update your name click on your profile !" },
     { text: "Start managing your cleaning tasks!" },
   ];
   return (

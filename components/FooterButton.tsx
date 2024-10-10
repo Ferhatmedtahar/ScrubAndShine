@@ -5,10 +5,6 @@ import Image from "next/image";
 export default function FooterButton() {
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    setTimeout(() => {
-      // Navigate to the home page
-      window.location.href = "/";
-    }, 400);
   };
   return (
     <button onClick={handleClick} className="gap-4 z-10">

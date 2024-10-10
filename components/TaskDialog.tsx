@@ -1,7 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/Button";
-import { CircleAlert, Plus } from "lucide-react";
-
 import {
   Dialog,
   DialogContent,
@@ -13,8 +10,12 @@ import {
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { Textarea } from "@/components/TextArea";
+import { Button } from "@/components/ui/Button";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { CircleAlert, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
 
 type Task = {
   title: string;
@@ -24,9 +25,19 @@ type Task = {
 
 type Inputs = {
   title: string;
-  description: string;
+  description?: string;
   priority: "High" | "Medium" | "Low";
 };
+
+const taskSchema = yup.object().shape({
+  title: yup.string().required("Title is required"),
+  description: yup.string().optional(), // Optional field
+  priority: yup
+    .string()
+    .oneOf(["High", "Medium", "Low"])
+    .required("Priority is required"),
+});
+
 function AddTaskDialog({
   onAddTask,
   task,
@@ -48,7 +59,9 @@ function AddTaskDialog({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    resolver: yupResolver(taskSchema),
+  });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     handleAddTask(data);
   };

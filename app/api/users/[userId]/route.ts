@@ -65,3 +65,23 @@ export async function PATCH(
     await prisma.$disconnect();
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { userId: string } }
+) {
+  try {
+    const { userId } = params;
+
+    await prisma.user.delete({
+      where: { id: userId }, // The ID of the room to be deleted
+    });
+
+    return NextResponse.json({ message: "user deleted" }, { status: 204 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to delete user" },
+      { status: 500 }
+    );
+  }
+}
