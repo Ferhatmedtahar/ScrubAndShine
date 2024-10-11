@@ -112,9 +112,6 @@ const PageClient = ({
           `Failed to update task ${taskId}: ${response.statusText}`
         );
       }
-
-      const updatedTask = await response.json(); // Get the updated task from the response (optional)
-      console.log("Task updated successfully:", updatedTask);
     } catch (error) {
       console.error("Error updating task:", error);
 

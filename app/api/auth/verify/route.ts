@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl; // Get query parameters from the request
   const token = searchParams.get("token"); // Retrieve the token from the query params
-  console.log(token);
+
   try {
     if (!process.env.JWT_SECRET) {
       return NextResponse.json(
@@ -22,7 +22,6 @@ export async function GET(req: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
     });
-    console.log(user);
     if (!user) {
       return NextResponse.json(
         { error: "Invalid token or user not found" },

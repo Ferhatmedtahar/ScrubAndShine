@@ -4,12 +4,7 @@ const secret = process.env.JWT_SECRET;
 if (!secret) {
   throw new Error("JWT_SECRET is not defined");
 }
-
-const bufferSecret = Buffer.from(secret);
-// new TextEncoder().encode(process.env.JWT_SECRET);
-
 export async function middleware(request: NextRequest) {
-  console.log("middleware called");
   const { pathname } = request.nextUrl;
   const protectedRoutes = ["/profile", "/rooms", "/tasks"];
 

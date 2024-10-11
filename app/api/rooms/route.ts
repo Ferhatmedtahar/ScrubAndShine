@@ -109,7 +109,6 @@ export async function GET(req: NextRequest) {
     }
 
     const userId = decoded.userId;
-    console.log("User ID:", userId);
 
     const rooms = await prisma.room.findMany({
       where: { userId },
