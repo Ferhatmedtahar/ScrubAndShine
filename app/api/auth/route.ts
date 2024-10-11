@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     );
 
     // Generate a magic link URL
-    const magicLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify?token=${token}`;
+    const magicLink = `/api/auth/verify?token=${token}`;
 
     // Send email with magic link using the Email class
     const emailInstance = new Email(user, magicLink);
