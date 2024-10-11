@@ -1,3 +1,4 @@
+"use client";
 import { FaChartLine, FaHome, FaTasks } from "react-icons/fa";
 import FeatureCard from "./FeatureCard";
 
@@ -27,7 +28,7 @@ export default function Features() {
   ];
 
   return (
-    <section className=" max-container padding-container mt-4 pb-8 border-darkPrimary-300 border-b   ">
+    <section className=" max-container padding-container mt-8 pb-8 border-darkPrimary-300 border-b   ">
       <div className=" mx-auto px-4">
         <h2 className="text-2xl lg:text-4xl cursor-default text-darkPrimary-100 font-bold text-center mb-12 default-underline hover:text-darkPrimary-200 transition-all duration-100 ">
           Our Features

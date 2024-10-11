@@ -7,6 +7,20 @@ import office from "@/public/office-cleaning.png";
 import { ArrowLeft, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+const container = {
+  hidden: { opacity: 1, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
 type Task = {
   id: number;
   title: string;
@@ -198,7 +212,12 @@ const PageClient = ({
         </div>
       </div>
 
-      <div className="space-y-4">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="visible"
+        className="space-y-4"
+      >
         {tasks.length === 0 ? (
           <div className="m-4 cursor-default flex flex-col py-10 text-center text-xl text-slate-400 opacity-80 hover:opacity-100 transition-all duration-100">
             <div className="flex items-center justify-center gap-2">
@@ -226,7 +245,7 @@ const PageClient = ({
             />
           ))
         )}
-      </div>
+      </motion.div>
       <ConfirmDeleteTask
         taskToDelete={taskToDelete}
         setTaskToDelete={setTaskToDelete}

@@ -158,7 +158,7 @@ export default function PageClient({
   };
 
   return (
-    <main className="max-container padding-container flex flex-col gap-4 ">
+    <main className="max-container padding-container flex flex-col gap-4  ">
       <div className="flex flex-col items-center gap-2 md:flex-row md:justify-between">
         <Stats stats={stats} />
         <RoomDialog

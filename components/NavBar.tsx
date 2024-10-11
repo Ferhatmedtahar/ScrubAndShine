@@ -48,7 +48,7 @@ export default function NavBar({ user }: { user: User | any }) {
 
   return (
     <nav className="bg-[#0843a8] shadow-md py-2 px-4">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-start">
         <ul className="flex justify-start items-center gap-6 px-4">
           <Logo />
           <li>

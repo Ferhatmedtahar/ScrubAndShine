@@ -1,8 +1,16 @@
 import { FlipWords } from "@/components/ui/flip-words";
+import { cookies } from "next/headers";
+import Link from "next/link";
 import { Button } from "./ButtonMe";
 // Make sure this is correctly imported
 
+function isValidJWT(token: string): boolean {
+  const jwtPattern = /^[A-Za-z0-9-_]+(\.[A-Za-z0-9-_]+){2}$/;
+  return jwtPattern.test(token);
+}
+
 export default function Hero() {
+  const jwt = cookies().get("jwt")?.value;
   const words = ["organization", "efficiency", "sparkle", "ease"];
 
   return (
@@ -21,7 +29,7 @@ export default function Hero() {
         </p>
 
         <Button background="bg-accent-200" hoverBackground="bg-accent-300">
-          Get Started
+          <Link href={jwt ? "/rooms" : "/login"}>Get Started</Link>
         </Button>
       </div>
     </section>

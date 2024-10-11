@@ -1,3 +1,12 @@
+"use client";
+import { motion } from "framer-motion";
+const item = {
+  hidden: { y: 2, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
 function AnalyticsCard({
   title,
   value,
@@ -9,7 +18,8 @@ function AnalyticsCard({
 }) {
   if (!total) total = 0;
   return (
-    <div
+    <motion.div
+      variants={item}
       className={` ${
         value / total === 1
           ? "bg-accent-200 hover:bg-accent-100"
@@ -31,7 +41,7 @@ function AnalyticsCard({
           ""
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 export default AnalyticsCard;

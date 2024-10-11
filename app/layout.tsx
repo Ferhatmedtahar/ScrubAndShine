@@ -1,6 +1,7 @@
 import "@/app/globals.css";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
+
 import { verifyToken } from "@/lib/verifyToken";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -34,10 +35,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-gradient-to-r from-[#faf4f4] to-[#f5ffff]">
+      <body className="relative min-h-screen flex flex-col bg-gradient-to-r from-[#f7f6f6] to-[#efffff] ">
         <NavBar user={user} />
         <div className="flex-grow">{children}</div>
-
         <Footer />
       </body>
     </html>

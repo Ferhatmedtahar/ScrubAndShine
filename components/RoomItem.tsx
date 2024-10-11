@@ -1,7 +1,14 @@
+"use client";
+import { motion } from "framer-motion";
 import { ArrowRight, Edit, Trash2 } from "lucide-react";
-
 import RoomButton from "./RoomButton";
-
+const item = {
+  hidden: { y: 2, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
 export default function RoomItem({
   room,
   onEdit,
@@ -14,7 +21,10 @@ export default function RoomItem({
   const { title, description, taskCount, slug } = room;
 
   return (
-    <div className="border border-darkPrimary-300  bg-green-100/10 rounded-lg p-4 hover:bg-bg-300 transition-all duration-150">
+    <motion.div
+      variants={item}
+      className="border border-darkPrimary-300  bg-green-100/10 rounded-lg p-4 hover:bg-bg-300 transition-all duration-150"
+    >
       <div className="flex flex-row items-center justify-between space-y-0 pb-2">
         <h1 className="text-lg  font-semibold blue-gradient">{title}</h1>
         <div className="flex space-x-2">
@@ -53,6 +63,6 @@ export default function RoomItem({
           </RoomButton>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
