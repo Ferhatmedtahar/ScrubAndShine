@@ -4,11 +4,6 @@ import Link from "next/link";
 import { Button } from "./ButtonMe";
 // Make sure this is correctly imported
 
-function isValidJWT(token: string): boolean {
-  const jwtPattern = /^[A-Za-z0-9-_]+(\.[A-Za-z0-9-_]+){2}$/;
-  return jwtPattern.test(token);
-}
-
 export default function Hero() {
   const jwt = cookies().get("jwt")?.value;
   const words = ["organization", "efficiency", "sparkle", "ease"];

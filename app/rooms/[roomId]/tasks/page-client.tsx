@@ -138,7 +138,7 @@ const PageClient = ({
         },
         body: JSON.stringify({ ...newTask, id: taskToEdit.id }),
       });
-      const data = await updatedTask.json();
+      await updatedTask.json();
       setTasks(
         tasks.map((task) =>
           task.id === taskToEdit.id ? { ...newTask, id: task.id } : task

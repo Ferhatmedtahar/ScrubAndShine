@@ -1,6 +1,4 @@
 import { Github, Linkedin } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import FooterButton from "./FooterButton";
 
 export default function Footer() {

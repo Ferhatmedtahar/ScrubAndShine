@@ -19,7 +19,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const jwt = cookies().get("jwt")?.value!;
+  const jwtCookie = cookies().get("jwt");
+  const jwt = jwtCookie ? jwtCookie.value : null;
+
   let user = null;
 
   if (jwt) {

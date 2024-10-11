@@ -3,8 +3,6 @@ import { verifyToken } from "@/lib/verifyToken";
 import { NextRequest, NextResponse } from "next/server";
 import slugify from "slugify";
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-
 // Create a Room
 export async function POST(req: Request) {
   try {

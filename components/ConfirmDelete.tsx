@@ -32,8 +32,8 @@ export default function ConfirmDelete({
         <DialogHeader>
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete the room "{roomToDelete?.title}"?
-            This action cannot be undone.
+            Are you sure you want to delete the room &quot;{roomToDelete?.title}
+            &quot;? This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex gap-1">

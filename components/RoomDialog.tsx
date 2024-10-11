@@ -78,7 +78,7 @@ export default function RoomDialog({
       setRoomTitle(room.title);
       setRoomDescription(room?.description ?? "");
     }
-  }, [room, open]);
+  }, [room, open, reset]);
 
   const handleAddRoom = ({
     title,

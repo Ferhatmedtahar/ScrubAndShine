@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Add the task to the room and increment taskCount
-    const updatedRoom = await prisma.room.update({
+    await prisma.room.update({
       where: { id: roomExists.id },
       data: {
         tasks: {
@@ -65,10 +65,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET(
-  req: Request,
-  { params }: { params: { roomId: string } }
-) {
+export async function GET(req: Request) {
   const url = new URL(req.url);
   const searchParam = url.searchParams.get("roomId")!;
   const roomSlug = searchParam; // Extract room slug from params

@@ -33,7 +33,6 @@ export default function LoginCard() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: yupResolver(LoginSchema),
@@ -50,10 +49,9 @@ export default function LoginCard() {
   const handleSubmitEmail = async ({ email }: Inputs) => {
     setIsSubmitting(true);
 
-    let response: Response;
     let responseData: any = {};
 
-    response = await fetch(`/api/auth`, {
+    const response: Response = await fetch(`/api/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

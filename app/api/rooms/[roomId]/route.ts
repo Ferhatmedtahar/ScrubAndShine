@@ -25,6 +25,7 @@ export async function GET(
 
     return NextResponse.json(room, { status: 200 });
   } catch (error) {
+    console.error("Error fetching room:", error);
     return NextResponse.json(
       { error: "Failed to fetch room" },
       { status: 500 }
@@ -56,6 +57,7 @@ export async function PUT(
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error updating room:", error);
     return NextResponse.json(
       { error: "Failed to update room" },
       { status: 500 }
@@ -83,6 +85,8 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error deleting room:", error);
+
     return NextResponse.json(
       { error: "Failed to delete room" },
       { status: 500 }

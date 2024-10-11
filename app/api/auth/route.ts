@@ -1,7 +1,6 @@
 // /api/auth/magic-link.ts
 import { prisma } from "@/lib/prisma";
 import { Email } from "@/lib/sendEmail";
-import { serialize } from "cookie";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -82,7 +82,7 @@ function AddTaskDialog({
       setDescription(task.description);
       setPriority(task.priority);
     }
-  }, [task, open]);
+  }, [task, open, reset]);
 
   const handleAddTask = (data: Inputs) => {
     const { title, description, priority } = data;
