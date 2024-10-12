@@ -18,9 +18,12 @@ export default async function Page() {
     redirect("/login");
   }
 
-  const data = await fetch(`/api/rooms?token=${jwt}`, {
-    cache: "no-store",
-  });
+  const data = await fetch(
+    `https://scrubandshine.onrender.com/api/rooms?token=${jwt}`,
+    {
+      cache: "no-store",
+    }
+  );
   if (!data.ok) {
     // Handle error if fetching fails
     throw new Error("Failed to fetch rooms");

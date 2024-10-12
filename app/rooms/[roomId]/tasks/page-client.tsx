@@ -59,13 +59,16 @@ const PageClient = ({
     // Create an array of promises for each task update
     const updatePromises = tasks.map(async (task) => {
       // Update task in the database to set completed to false
-      const response = await fetch(`/api/tasks/${task.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...task, completed: false }), // Send updated task
-      });
+      const response = await fetch(
+        `https://scrubandshine.onrender.com/api/tasks/${task.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...task, completed: false }), // Send updated task
+        }
+      );
 
       if (!response.ok) {
         // Handle error if needed (e.g., log it)
@@ -99,13 +102,16 @@ const PageClient = ({
 
     try {
       // Send a PUT request to the backend to update the task
-      const response = await fetch(`/api/tasks/${taskId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ completed: newCompletedStatus }), // Send the new completed status
-      });
+      const response = await fetch(
+        `https://scrubandshine.onrender.com/api/tasks/${taskId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ completed: newCompletedStatus }), // Send the new completed status
+        }
+      );
 
       if (!response.ok) {
         throw new Error(
@@ -128,13 +134,16 @@ const PageClient = ({
 
   const addTask = async (newTask: Task) => {
     if (isEditing && taskToEdit) {
-      const updatedTask = await fetch(`/api/tasks/${taskToEdit.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...newTask, id: taskToEdit.id }),
-      });
+      const updatedTask = await fetch(
+        `https://scrubandshine.onrender.com/api/tasks/${taskToEdit.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...newTask, id: taskToEdit.id }),
+        }
+      );
       await updatedTask.json();
       setTasks(
         tasks.map((task) =>
@@ -144,13 +153,16 @@ const PageClient = ({
       setIsEditing(false);
       setTaskToEdit(null);
     } else {
-      const createdTask = await fetch(`/api/tasks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...newTask, roomId }),
-      });
+      const createdTask = await fetch(
+        `https://scrubandshine.onrender.com/api/tasks`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...newTask, roomId }),
+        }
+      );
       const data = await createdTask.json();
       setTasks([...tasks, { ...newTask, id: data.id }]);
     }
@@ -167,13 +179,16 @@ const PageClient = ({
 
   const handleDeleteTask = async () => {
     if (taskToDelete) {
-      await fetch(`/api/tasks/${taskToDelete.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: taskToDelete.id, roomId }),
-      });
+      await fetch(
+        `https://scrubandshine.onrender.com/api/tasks/${taskToDelete.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: taskToDelete.id, roomId }),
+        }
+      );
       setTasks(tasks.filter((room) => room.id !== taskToDelete.id));
       setTaskToDelete(null);
     }

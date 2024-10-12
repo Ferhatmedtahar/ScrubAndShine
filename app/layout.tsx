@@ -23,12 +23,11 @@ export default async function RootLayout({
   const jwt = jwtCookie ? jwtCookie.value : null;
 
   let user = null;
-
   if (jwt) {
     const decoded = verifyToken(jwt); // Assuming this is the token verification
     if (decoded && decoded.userId) {
       const data = await fetch(
-        `/api/users/${decoded.userId}`
+        `https://scrubandshine.onrender.com/api/users/${decoded.userId}`
       );
       const result = await data.json();
       user = result?.user ?? null;

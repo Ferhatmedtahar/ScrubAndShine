@@ -48,13 +48,16 @@ export default function PageClient({
 
       if (isEditing && roomToEdit) {
         // Update room
-        response = await fetch(`/api/rooms/${roomToEdit.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...newRoom, id: roomToEdit.id }),
-        });
+        response = await fetch(
+          `https://scrubandshine.onrender.com/api/rooms/${roomToEdit.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...newRoom, id: roomToEdit.id }),
+          }
+        );
 
         // Parse the response
         try {
@@ -86,13 +89,16 @@ export default function PageClient({
         }
       } else {
         // Create new room
-        response = await fetch(`/api/rooms?token=${jwt}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newRoom),
-        });
+        response = await fetch(
+          `https://scrubandshine.onrender.com/api/rooms?token=${jwt}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newRoom),
+          }
+        );
 
         // Parse the response
         try {
@@ -140,9 +146,12 @@ export default function PageClient({
   const handleDeleteRoom = async () => {
     if (roomToDelete) {
       try {
-        const response = await fetch(`/api/rooms/${roomToDelete.id}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `https://scrubandshine.onrender.com/api/rooms/${roomToDelete.id}`,
+          {
+            method: "DELETE",
+          }
+        );
 
         if (response.ok) {
           router.refresh();

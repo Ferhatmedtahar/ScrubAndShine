@@ -29,9 +29,12 @@ export default function NavBar({ user }: { user: User | any }) {
 
   const handleSignOut = async () => {
     setLogOutOpen(false);
-    const response = await fetch("/api/auth/signout", {
-      method: "POST",
-    });
+    const response = await fetch(
+      "https://scrubandshine.onrender.com/api/auth/signout",
+      {
+        method: "POST",
+      }
+    );
     const data = await response.json();
     if (response.ok) {
       router.push("/");

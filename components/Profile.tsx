@@ -51,13 +51,16 @@ export default function Profile({
 
   const handleUpdateProfile = async ({ name }: { name: string }) => {
     // Update the user's name in the database
-    const response = await fetch(`/api/users/${userId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name }),
-    });
+    const response = await fetch(
+      `https://scrubandshine.onrender.com/api/users/${userId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name }),
+      }
+    );
 
     if (!response.ok) {
       // Handle error if needed (e.g., log it)

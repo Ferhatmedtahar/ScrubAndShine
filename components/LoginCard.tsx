@@ -51,13 +51,16 @@ export default function LoginCard() {
 
     let responseData: any = {};
 
-    const response: Response = await fetch(`/api/auth`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
+    const response: Response = await fetch(
+      `https://scrubandshine.onrender.com/api/auth`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    );
 
     // Parse the response
     try {
