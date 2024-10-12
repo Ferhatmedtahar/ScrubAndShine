@@ -40,7 +40,7 @@ export class Email {
 
   async send(subject: string) {
     // 1) Render HTML from pug template
-    console.log(process.cwd());
+
     const html = pug.renderFile(
       path.join(process.cwd(), "view/emails/emailBase.pug"),
       {

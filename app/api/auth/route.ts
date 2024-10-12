@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     );
 
     // Generate a magic link URL
-    const magicLink = `/api/auth/verify?token=${token}`;
+    const magicLink = `https://scrubandshine.onrender.com/api/auth/verify?token=${token}`;
 
     // Send email with magic link using the Email class
     const emailInstance = new Email(user, magicLink);
