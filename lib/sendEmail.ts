@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import path from "path";
 import pug from "pug";
 
 export class Email {
@@ -40,11 +41,14 @@ export class Email {
   async send(subject: string) {
     // 1) Render HTML from pug template
 
-    const html = pug.renderFile("/view/emails/emailBase.pug", {
-      name: this.name,
-      url: this.url,
-      subject,
-    });
+    const html = pug.renderFile(
+      path.join(__dirname, "views/emails/emailBase.pug"),
+      {
+        name: this.name,
+        url: this.url,
+        subject,
+      }
+    );
 
     // 2) Define email options
     const mailOptions = {
