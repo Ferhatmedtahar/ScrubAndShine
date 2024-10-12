@@ -43,7 +43,7 @@ export class Email {
 
     console.log(__dirname, "dirname");
     const html = pug.renderFile(
-      path.join(__dirname, "../../../../../views/emails/emailBase.pug"),
+      path.join(__dirname, "../../../view/emails/emailBase.pug"),
       {
         name: this.name,
         url: this.url,
