@@ -41,6 +41,7 @@ export class Email {
   async send(subject: string) {
     // 1) Render HTML from pug template
 
+    console.log(__dirname, "dirname");
     const html = pug.renderFile(
       path.join(__dirname, "../../../../../views/emails/emailBase.pug"),
       {
