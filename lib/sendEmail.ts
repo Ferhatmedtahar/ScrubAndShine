@@ -42,7 +42,7 @@ export class Email {
     // 1) Render HTML from pug template
 
     const html = pug.renderFile(
-      path.join(__dirname, "views/emails/emailBase.pug"),
+      path.join(__dirname, "../../../../../views/emails/emailBase.pug"),
       {
         name: this.name,
         url: this.url,
