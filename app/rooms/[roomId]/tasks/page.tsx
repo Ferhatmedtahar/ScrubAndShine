@@ -10,12 +10,9 @@ export default async function Page({ params }: { params: { roomId: string } }) {
   const roomSlug = params.roomId; // This is the slug from the URL
 
   // Fetch tasks data based on the room slug
-  const data = await fetch(
-    `http://localhost:3000/api/tasks?roomId=${roomSlug}`,
-    {
-      cache: "no-store",
-    }
-  );
+  const data = await fetch(`/api/tasks?roomId=${roomSlug}`, {
+    cache: "no-store",
+  });
   const res = await data.json();
 
   // Handle possible error states

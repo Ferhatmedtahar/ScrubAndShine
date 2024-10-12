@@ -28,7 +28,7 @@ export default async function RootLayout({
     const decoded = verifyToken(jwt); // Assuming this is the token verification
     if (decoded && decoded.userId) {
       const data = await fetch(
-        `http://localhost:3000/api/users/${decoded.userId}`
+        `/api/users/${decoded.userId}`
       );
       const result = await data.json();
       user = result?.user ?? null;

@@ -18,7 +18,7 @@ export default async function Page() {
     redirect("/login");
   }
 
-  const data = await fetch(`http://localhost:3000/api/rooms?token=${jwt}`, {
+  const data = await fetch(`/api/rooms?token=${jwt}`, {
     cache: "no-store",
   });
   if (!data.ok) {
